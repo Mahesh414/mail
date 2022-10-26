@@ -1,51 +1,70 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# =============================================================================
-# Created By  : Jeromie Kirchoff
-# Created Date: Mon Aug 02 17:46:00 PDT 2018.
-# =============================================================================
-# Imports
-# =============================================================================
-import smtplib
+import boto3
+from botocore.exceptions import ClientError
 
-# =============================================================================
-# SET EMAIL LOGIN REQUIREMENTS
-# =============================================================================
-gmail_user = 'Chennamahesh.inbox@gmail.com'
-gmail_app_password = 'Chenna@1009S'
+SENDER = "chennamahesh.inbox@gmail.com" # must be verified in AWS SES Email
+RECIPIENT = "chennamahesh414@gmail.com" # must be verified in AWS SES Email
 
-# =============================================================================
-# SET THE INFO ABOUT THE SAID EMAIL
-# =============================================================================
-sent_from = gmail_user
-sent_to = ['chennamahesh.inbox@gmail.com', 'chennamahesh414@gmail.com']
-sent_subject = "Hey Friends!"
-sent_body = ("Hey, what's up? friend!\n\n"
-             "I hope you have been well!\n"
-             "\n"
-             "Cheers,\n"
-             "Jay\n")
+# If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
+AWS_REGION = "us-east-1"
 
-email_text = """\
-From: %s
-To: %s
-Subject: %s
+# The subject line for the email.
+SUBJECT = "This is test email for testing purpose..!!"
 
-%s
-""" % (sent_from, ", ".join(sent_to), sent_subject, sent_body)
+# The email body for recipients with non-HTML email clients.
+BODY_TEXT = ("Hey Hi...\r\n"
+             "This email was sent with Amazon SES using the "
+             "AWS SDK for Python (Boto)."
+            )
+            
+# The HTML body of the email.
+BODY_HTML = """<html>
+<head></head>
+<body>
+  <h1>Hey Hi...</h1>
+  <p>This email was sent with
+    <a href='https://aws.amazon.com/ses/'>Amazon SES</a> using the
+    <a href='https://aws.amazon.com/sdk-for-python/'>
+      AWS SDK for Python (Boto)</a>.</p>
+</body>
+</html>
+            """            
 
-# =============================================================================
-# SEND EMAIL OR DIE TRYING!!!
-# Details: http://www.samlogic.net/articles/smtp-commands-reference.htm
-# =============================================================================
+# The character encoding for the email.
+CHARSET = "UTF-8"
 
+# Create a new SES resource and specify a region.
+client = boto3.client('ses',region_name=AWS_REGION)
+
+# Try to send the email.
 try:
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    server.ehlo()
-    server.login(gmail_user, gmail_app_password)
-    server.sendmail(sent_from, sent_to, email_text)
-    server.close()
+    #Provide the contents of the email.
+    response = client.send_email(
+        Destination={
+            'ToAddresses': [
+                RECIPIENT,
+            ],
+        },
+        Message={
+            'Body': {
+                'Html': {
+    
+                    'Data': BODY_HTML
+                },
+                'Text': {
+    
+                    'Data': BODY_TEXT
+                },
+            },
+            'Subject': {
 
-    print('Email sent!')
-except Exception as exception:
-    print("Error: %s!\n\n" % exception)
+                'Data': SUBJECT
+            },
+        },
+        Source=SENDER
+    )
+# Display an error if something goes wrong.	
+except ClientError as e:
+    print(e.response['Error']['Message'])
+else:
+    print("Email sent! Message ID:"),
+    print(response['MessageId'])
