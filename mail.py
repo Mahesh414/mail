@@ -11,14 +11,14 @@ import smtplib
 # =============================================================================
 # SET EMAIL LOGIN REQUIREMENTS
 # =============================================================================
-gmail_user = 'THEFROM@gmail.com'
-gmail_app_password = 'YOUR-GOOGLE-APPLICATION-PASSWORD!!!!'
+gmail_user = 'Chennamahesh.inbox@gmail.com'
+gmail_app_password = 'Chenna@1009S'
 
 # =============================================================================
 # SET THE INFO ABOUT THE SAID EMAIL
 # =============================================================================
 sent_from = gmail_user
-sent_to = ['THE-TO@gmail.com', 'THE-TO@gmail.com']
+sent_to = ['chennamahesh.inbox@gmail.com', 'chennamahesh414@gmail.com']
 sent_subject = "Hey Friends!"
 sent_body = ("Hey, what's up? friend!\n\n"
              "I hope you have been well!\n"
