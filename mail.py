@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 SENDER = "chennamahesh.inbox@gmail.com" # must be verified in AWS SES Email
-RECIPIENT = "chennamahesh414@gmail.com" # must be verified in AWS SES Email
+RECIPIENT = "chennamahesh.inbox@gmail.com" # must be verified in AWS SES Email
 
 # If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
 AWS_REGION = "us-east-1"
