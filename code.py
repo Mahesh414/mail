@@ -23,7 +23,7 @@ msg['Subject'] = "A test mail sent by Python. It has an attachment."
 body =  '''Hello, This is a simple mail. There is only text, no attachments are there The mail is sent using Python SMTP library.
 Thank You'''
 
-# attach the body with the msg instance
+# attach the body with the msg instance.
 msg.attach(MIMEText(body, 'plain'))
 
 # open the file to be sent
